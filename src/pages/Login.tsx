@@ -1,5 +1,6 @@
 import LoginForm from "../components/auth/LoginForm";
 import logo from "../assets/kn-logo.png";
+import { Mail, Phone } from "lucide-react";
 
 type LoggedInUser = {
   id: number;
@@ -68,14 +69,49 @@ function Login({
           </div>
         </div>
 
+        {/* Developer Information */}
+        <div className="mt-6 rounded-xl border border-slate-800/80 bg-slate-900/50 px-4 py-4 text-center backdrop-blur">
+          <p className="text-[11px] font-medium uppercase tracking-wider text-slate-600">
+            Developed by
+          </p>
+
+          <p className="mt-1 text-sm font-semibold text-slate-300">
+            Anas Shakeel
+          </p>
+
+          <p className="mt-0.5 text-[11px] text-emerald-400">
+             Software Developer
+          </p>
+
+          <div className="mt-3 flex items-center justify-center gap-4">
+            <a
+              href="tel:+923206362038"
+              className="group flex items-center gap-1.5 text-[11px] text-slate-500 transition-colors hover:text-emerald-400"
+            >
+              <Phone className="h-3.5 w-3.5" />
+              <span>0320 6362038</span>
+            </a>
+
+            <span className="h-3 w-px bg-slate-700" />
+
+            <a
+              href="mailto:anas.work199786@gmail.com"
+              className="group flex items-center gap-1.5 text-[11px] text-slate-500 transition-colors hover:text-emerald-400"
+            >
+              <Mail className="h-3.5 w-3.5" />
+              <span>anas.work199786@gmail.com</span>
+            </a>
+          </div>
+        </div>
+
         {/* Footer */}
-        <div className="mt-6 text-center">
+        <div className="mt-4 text-center">
           <p className="text-xs font-medium text-slate-500">
             Kamran Gujjer Enterprise
           </p>
 
           <p className="mt-1 text-[11px] text-slate-600">
-            Factory Management System
+            Factory Management System · © 2026
           </p>
         </div>
       </div>
@@ -84,4 +120,3 @@ function Login({
 }
 
 export default Login;
-

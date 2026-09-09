@@ -2,13 +2,16 @@ import { useEffect, useState } from "react";
 import {
   AlertCircle,
   CheckCircle2,
+  Code2,
   Database,
   Factory as FactoryIcon,
   Eye,
   EyeOff,
   KeyRound,
   LockKeyhole,
+  Mail,
   Package,
+  Phone,
   Plus,
   RefreshCw,
   Save,
@@ -22,7 +25,6 @@ import {
 import Sidebar from "../components/Sidebar";
 import settingsService from "../services/settingsService";
 import type {
-  AppSettings,
   Factory,
   MaalCategory,
   PaymentMethodRecord,
@@ -71,9 +73,7 @@ function SectionHeader({
         <h2 className="text-[15px] font-semibold text-white">{title}</h2>
 
         {description && (
-          <p className="mt-1 text-xs leading-5 text-slate-500">
-            {description}
-          </p>
+          <p className="mt-1 text-xs leading-5 text-slate-500">{description}</p>
         )}
       </div>
     </div>
@@ -114,7 +114,9 @@ function StatusMessage({
 // REUSABLE CATEGORY / METHOD MANAGER
 // =====================================================
 
-function ListManager<T extends { id: number; name: string; isActive: boolean }>({
+function ListManager<
+  T extends { id: number; name: string; isActive: boolean },
+>({
   title,
   description,
   icon,
@@ -294,9 +296,9 @@ const Settings = ({
 
   const [maalCategories, setMaalCategories] = useState<MaalCategory[]>([]);
   const [factories, setFactories] = useState<Factory[]>([]);
-  const [paymentMethods, setPaymentMethods] = useState<
-    PaymentMethodRecord[]
-  >([]);
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethodRecord[]>(
+    [],
+  );
 
   const [newUsername, setNewUsername] = useState(user.username);
   const [usernameMessage, setUsernameMessage] = useState("");
@@ -347,9 +349,7 @@ const Settings = ({
       setFactories(factoryList);
     } catch (error) {
       setLoadError(
-        typeof error === "string"
-          ? error
-          : "Settings load nahi ho sakin."
+        typeof error === "string" ? error : "Settings load nahi ho sakin.",
       );
     } finally {
       setIsLoading(false);
@@ -384,9 +384,7 @@ const Settings = ({
 
       setFactoryMessage("Factory information successfully save ho gayi.");
     } catch (err) {
-      setFactoryError(
-        typeof err === "string" ? err : "Save nahi ho saka."
-      );
+      setFactoryError(typeof err === "string" ? err : "Save nahi ho saka.");
     } finally {
       setIsSavingFactory(false);
     }
@@ -408,18 +406,13 @@ const Settings = ({
     try {
       setIsSavingUsername(true);
 
-      await settingsService.changeUsername(
-        user.id,
-        newUsername.trim()
-      );
+      await settingsService.changeUsername(user.id, newUsername.trim());
 
       setUsernameMessage(
-        "Username update ho gaya. Agli baar isi naye username se login karein."
+        "Username update ho gaya. Agli baar isi naye username se login karein.",
       );
     } catch (err) {
-      setUsernameError(
-        typeof err === "string" ? err : "Update nahi ho saka."
-      );
+      setUsernameError(typeof err === "string" ? err : "Update nahi ho saka.");
     } finally {
       setIsSavingUsername(false);
     }
@@ -439,9 +432,7 @@ const Settings = ({
     }
 
     if (newPassword !== confirmPassword) {
-      setPasswordError(
-        "Naya password aur confirm password match nahi karte."
-      );
+      setPasswordError("Naya password aur confirm password match nahi karte.");
       return;
     }
 
@@ -451,7 +442,7 @@ const Settings = ({
       await settingsService.changePassword(
         user.id,
         currentPassword,
-        newPassword
+        newPassword,
       );
 
       setPasswordMessage("Password successfully update ho gaya.");
@@ -464,9 +455,7 @@ const Settings = ({
       setShowNewPassword(false);
       setShowConfirmPassword(false);
     } catch (err) {
-      setPasswordError(
-        typeof err === "string" ? err : "Update nahi ho saka."
-      );
+      setPasswordError(typeof err === "string" ? err : "Update nahi ho saka.");
     } finally {
       setIsSavingPassword(false);
     }
@@ -489,9 +478,7 @@ const Settings = ({
         setBackupMessage(`Backup successfully save ho gaya: ${path}`);
       }
     } catch (err) {
-      setBackupError(
-        typeof err === "string" ? err : "Backup nahi ban saka."
-      );
+      setBackupError(typeof err === "string" ? err : "Backup nahi ban saka.");
     } finally {
       setIsBackingUp(false);
     }
@@ -506,7 +493,7 @@ const Settings = ({
     setBackupError("");
 
     const confirmed = window.confirm(
-      "Kya aap purana backup restore karna chahte hain?\n\nYe current data ko overwrite kar dega aur ye action wapas nahi ho sakta."
+      "Kya aap purana backup restore karna chahte hain?\n\nYe current data ko overwrite kar dega aur ye action wapas nahi ho sakta.",
     );
 
     if (!confirmed) return;
@@ -518,13 +505,11 @@ const Settings = ({
 
       if (path) {
         setBackupMessage(
-          "Restore successfully complete ho gaya. App ko band kar ke dobara khol lein taake naya data load ho."
+          "Restore successfully complete ho gaya. App ko band kar ke dobara khol lein taake naya data load ho.",
         );
       }
     } catch (err) {
-      setBackupError(
-        typeof err === "string" ? err : "Restore nahi ho saka."
-      );
+      setBackupError(typeof err === "string" ? err : "Restore nahi ho saka.");
     } finally {
       setIsRestoring(false);
     }
@@ -595,8 +580,8 @@ const Settings = ({
               </h1>
 
               <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500">
-                Factory information, categories, account security aur
-                database backup yahan manage karein.
+                Factory information, categories, account security aur database
+                backup yahan manage karein.
               </p>
             </div>
 
@@ -636,15 +621,9 @@ const Settings = ({
                 description="Ye information bills, reports aur factory records mein use hogi."
               />
 
-              <StatusMessage
-                type="success"
-                message={factoryMessage}
-              />
+              <StatusMessage type="success" message={factoryMessage} />
 
-              <StatusMessage
-                type="error"
-                message={factoryError}
-              />
+              <StatusMessage type="error" message={factoryError} />
 
               <div className="grid gap-4 md:grid-cols-3">
                 <div>
@@ -727,10 +706,8 @@ const Settings = ({
 
                 setFactories((prev) =>
                   prev.map((factory) =>
-                    factory.id === id
-                      ? { ...factory, isActive }
-                      : factory
-                  )
+                    factory.id === id ? { ...factory, isActive } : factory,
+                  ),
                 );
               }}
             />
@@ -745,23 +722,17 @@ const Settings = ({
               icon={<Package size={18} />}
               items={maalCategories}
               onAdd={async (name) => {
-                const created =
-                  await settingsService.addMaalCategory(name);
+                const created = await settingsService.addMaalCategory(name);
 
                 setMaalCategories((prev) => [...prev, created]);
               }}
               onToggle={async (id, isActive) => {
-                await settingsService.toggleMaalCategory(
-                  id,
-                  isActive
-                );
+                await settingsService.toggleMaalCategory(id, isActive);
 
                 setMaalCategories((prev) =>
                   prev.map((category) =>
-                    category.id === id
-                      ? { ...category, isActive }
-                      : category
-                  )
+                    category.id === id ? { ...category, isActive } : category,
+                  ),
                 );
               }}
             />
@@ -776,23 +747,17 @@ const Settings = ({
               icon={<WalletCards size={18} />}
               items={paymentMethods}
               onAdd={async (name) => {
-                const created =
-                  await settingsService.addPaymentMethod(name);
+                const created = await settingsService.addPaymentMethod(name);
 
                 setPaymentMethods((prev) => [...prev, created]);
               }}
               onToggle={async (id, isActive) => {
-                await settingsService.togglePaymentMethod(
-                  id,
-                  isActive
-                );
+                await settingsService.togglePaymentMethod(id, isActive);
 
                 setPaymentMethods((prev) =>
                   prev.map((method) =>
-                    method.id === id
-                      ? { ...method, isActive }
-                      : method
-                  )
+                    method.id === id ? { ...method, isActive } : method,
+                  ),
                 );
               }}
             />
@@ -808,15 +773,9 @@ const Settings = ({
                 description="Login ke liye username update karein."
               />
 
-              <StatusMessage
-                type="success"
-                message={usernameMessage}
-              />
+              <StatusMessage type="success" message={usernameMessage} />
 
-              <StatusMessage
-                type="error"
-                message={usernameError}
-              />
+              <StatusMessage type="error" message={usernameError} />
 
               <div>
                 <label className="mb-2 block text-xs font-medium text-slate-400">
@@ -868,15 +827,9 @@ const Settings = ({
                 description="Account ko secure rakhne ke liye password update karein."
               />
 
-              <StatusMessage
-                type="success"
-                message={passwordMessage}
-              />
+              <StatusMessage type="success" message={passwordMessage} />
 
-              <StatusMessage
-                type="error"
-                message={passwordError}
-              />
+              <StatusMessage type="error" message={passwordError} />
 
               <div className="space-y-3.5">
                 {/* Current */}
@@ -894,18 +847,14 @@ const Settings = ({
                     <input
                       type={showCurrentPassword ? "text" : "password"}
                       value={currentPassword}
-                      onChange={(e) =>
-                        setCurrentPassword(e.target.value)
-                      }
+                      onChange={(e) => setCurrentPassword(e.target.value)}
                       placeholder="Enter current password"
                       className={`${inputClassName} pl-9 pr-10`}
                     />
 
                     <button
                       type="button"
-                      onClick={() =>
-                        setShowCurrentPassword((prev) => !prev)
-                      }
+                      onClick={() => setShowCurrentPassword((prev) => !prev)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-300"
                     >
                       {showCurrentPassword ? (
@@ -932,18 +881,14 @@ const Settings = ({
                     <input
                       type={showNewPassword ? "text" : "password"}
                       value={newPassword}
-                      onChange={(e) =>
-                        setNewPassword(e.target.value)
-                      }
+                      onChange={(e) => setNewPassword(e.target.value)}
                       placeholder="Enter new password"
                       className={`${inputClassName} pl-9 pr-10`}
                     />
 
                     <button
                       type="button"
-                      onClick={() =>
-                        setShowNewPassword((prev) => !prev)
-                      }
+                      onClick={() => setShowNewPassword((prev) => !prev)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-300"
                     >
                       {showNewPassword ? (
@@ -968,22 +913,16 @@ const Settings = ({
                     />
 
                     <input
-                      type={
-                        showConfirmPassword ? "text" : "password"
-                      }
+                      type={showConfirmPassword ? "text" : "password"}
                       value={confirmPassword}
-                      onChange={(e) =>
-                        setConfirmPassword(e.target.value)
-                      }
+                      onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Confirm new password"
                       className={`${inputClassName} pl-9 pr-10`}
                     />
 
                     <button
                       type="button"
-                      onClick={() =>
-                        setShowConfirmPassword((prev) => !prev)
-                      }
+                      onClick={() => setShowConfirmPassword((prev) => !prev)}
                       className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-500 transition hover:text-slate-300"
                     >
                       {showConfirmPassword ? (
@@ -1025,15 +964,9 @@ const Settings = ({
                 description="Factory ka complete database backup karein ya previous backup restore karein."
               />
 
-              <StatusMessage
-                type="success"
-                message={backupMessage}
-              />
+              <StatusMessage type="success" message={backupMessage} />
 
-              <StatusMessage
-                type="error"
-                message={backupError}
-              />
+              <StatusMessage type="error" message={backupError} />
 
               <div className="grid gap-4 md:grid-cols-2">
                 {/* Backup Card */}
@@ -1045,8 +978,8 @@ const Settings = ({
                       </h3>
 
                       <p className="mt-1 text-xs leading-5 text-slate-500">
-                        Purchases, sales, khata, payments, expenses aur
-                        settings ka complete backup create karein.
+                        Purchases, sales, khata, payments, expenses aur settings
+                        ka complete backup create karein.
                       </p>
                     </div>
 
@@ -1062,17 +995,12 @@ const Settings = ({
                     className={buttonPrimaryClass}
                   >
                     {isBackingUp ? (
-                      <RefreshCw
-                        size={15}
-                        className="animate-spin"
-                      />
+                      <RefreshCw size={15} className="animate-spin" />
                     ) : (
                       <Database size={15} />
                     )}
 
-                    {isBackingUp
-                      ? "Creating Backup..."
-                      : "Backup Data"}
+                    {isBackingUp ? "Creating Backup..." : "Backup Data"}
                   </button>
                 </div>
 
@@ -1085,8 +1013,8 @@ const Settings = ({
                       </h3>
 
                       <p className="mt-1 text-xs leading-5 text-slate-500">
-                        Previous backup se database restore karein.
-                        Existing data overwrite ho jayega.
+                        Previous backup se database restore karein. Existing
+                        data overwrite ho jayega.
                       </p>
                     </div>
 
@@ -1102,17 +1030,12 @@ const Settings = ({
                     className="inline-flex items-center justify-center gap-2 rounded-xl border border-red-500/25 bg-red-500/10 px-4 py-2.5 text-sm font-semibold text-red-400 transition hover:bg-red-500/15 disabled:cursor-not-allowed disabled:opacity-50"
                   >
                     {isRestoring ? (
-                      <RefreshCw
-                        size={15}
-                        className="animate-spin"
-                      />
+                      <RefreshCw size={15} className="animate-spin" />
                     ) : (
                       <Upload size={15} />
                     )}
 
-                    {isRestoring
-                      ? "Restoring..."
-                      : "Restore Backup"}
+                    {isRestoring ? "Restoring..." : "Restore Backup"}
                   </button>
                 </div>
               </div>
@@ -1128,9 +1051,99 @@ const Settings = ({
                   <span className="font-semibold text-amber-400">
                     Important:
                   </span>{" "}
-                  Restore karne ke baad app ko band kar ke dobara
-                  open karna zaroori hai taake restored data properly
-                  load ho.
+                  Restore karne ke baad app ko band kar ke dobara open karna
+                  zaroori hai taake restored data properly load ho.
+                </p>
+              </div>
+            </section>
+
+            {/* =================================================
+    ABOUT / DEVELOPER
+================================================== */}
+
+            <section className="rounded-2xl border border-slate-800/80 bg-slate-900/80 p-5 shadow-sm xl:col-span-2 lg:p-6">
+              <SectionHeader
+                icon={<Code2 size={19} />}
+                title="About Software"
+                description="Software information aur developer support details."
+              />
+
+              <div className="grid gap-4 md:grid-cols-2">
+                {/* Software Info */}
+                <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-5">
+                  <div className="flex items-start gap-4">
+                    <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-emerald-500/20 bg-emerald-500/10">
+                      <Code2 size={19} className="text-emerald-400" />
+                    </div>
+
+                    <div>
+                      <h3 className="text-sm font-semibold text-white">
+                        Kamran Gujjer Enterprise
+                      </h3>
+
+                      <p className="mt-1 text-xs text-slate-500">
+                        Factory Management System
+                      </p>
+
+                      <div className="mt-3 inline-flex items-center rounded-lg border border-slate-800 bg-slate-900 px-2.5 py-1">
+                        <span className="text-[11px] font-medium text-slate-400">
+                          Version 1.0.0
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Developer Info */}
+                <div className="rounded-2xl border border-slate-800 bg-slate-950/40 p-5">
+                  <div className="mb-4">
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-400">
+                      Developed By
+                    </p>
+
+                    <h3 className="mt-1 text-base font-semibold text-white">
+                      Anas Shakeel
+                    </h3>
+
+                    <p className="mt-1 text-xs text-slate-500">
+                      Software Developer
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <a
+                      href="tel:+923206362038"
+                      className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/70 px-3.5 py-2.5 transition hover:border-emerald-500/20 hover:bg-slate-800"
+                    >
+                      <Phone size={15} className="text-emerald-400" />
+
+                      <span className="text-xs text-slate-300">
+                        0320 6362038
+                      </span>
+                    </a>
+
+                    <a
+                      href="mailto:anas.work199786@gmail.com"
+                      className="flex items-center gap-3 rounded-xl border border-slate-800 bg-slate-900/70 px-3.5 py-2.5 transition hover:border-emerald-500/20 hover:bg-slate-800"
+                    >
+                      <Mail size={15} className="text-emerald-400" />
+
+                      <span className="truncate text-xs text-slate-300">
+                        anas.work199786@gmail.com
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="mt-5 border-t border-slate-800/70 pt-4 text-center">
+                <p className="text-[11px] text-slate-300">
+                  © 2026 Anas Shakeel • All rights reserved
+                </p>
+
+                <p className="mt-1 text-[10px] text-slate-300">
+                  Developed for Kamran Gujjer Enterprise
                 </p>
               </div>
             </section>
