@@ -101,29 +101,19 @@ The application is designed to be simple enough for daily use while maintaining 
 
 > Screenshots will be added here.
 
-### Login
+![Login Screen](./src/screenShots/login.png)
 
-![Login Screen](./screenShots/login.png)
+![Dashboard](./src/screenShots/dashboard.png)
 
-### Dashboard
+![Purchase](./src/screenShots/purchase.png)
 
-![Dashboard](./screenShots/dashboard.png)
+![Sell](./src/screenShots/sell.png)
 
-### Stock Adjustments
+![Stock Adjustments](./src/screenShots/stock-adjustments.png)
 
-![Stock Adjustments](./screenShots/stock-adjustments.png)
+![Reports](./src/screenShots/reports.png)
 
-### Sales & Billing
-
-![Sales and Billing](./screenShots/purchase.png)
-
-### Settings
-
-![Settings](./screenShots/settings.png)
-
-### Ledger
-
-![Ledger](./screenShots/Khata.png)
+![Settings](./src/screenShots/settings.png)
 
 ---
 
